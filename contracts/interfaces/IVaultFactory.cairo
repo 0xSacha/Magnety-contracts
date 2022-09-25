@@ -2,144 +2,142 @@
 
 from starkware.cairo.common.uint256 import Uint256
 
-struct Integration:
-    member contract : felt
-    member selector : felt
-    member integration: felt
-end
-#
+struct Integration {
+    contract: felt,
+    selector: felt,
+    integration: felt,
+}
+//
 @contract_interface
-namespace IVaultFactory:
+namespace IVaultFactory {
+    func getOwner() -> (res: felt) {
+    }
 
-    func getOwner() -> (res : felt):
-    end
+    func getOracle() -> (res: felt) {
+    }
 
-    func getOracle() -> (res : felt):
-    end
+    func getFeeManager() -> (res: felt) {
+    }
 
-    func getFeeManager() -> (res : felt):
-    end
+    func getPolicyManager() -> (res: felt) {
+    }
 
-    func getPolicyManager() -> (res : felt):
-    end
+    func getIntegrationManager() -> (res: felt) {
+    }
 
-    func getIntegrationManager() -> (res : felt):
-    end
+    func getPrimitivePriceFeed() -> (res: felt) {
+    }
 
-    func getPrimitivePriceFeed() -> (res : felt):
-    end
+    func getValueInterpretor() -> (res: felt) {
+    }
 
-    func getValueInterpretor() -> (res : felt):
-    end
+    func getDaoTreasury() -> (res: felt) {
+    }
 
-    func getDaoTreasury() -> (res : felt):
-    end
+    func getStackingVault() -> (res: felt) {
+    }
 
-    func getStackingVault() -> (res : felt):
-    end
+    func getDaoTreasuryFee() -> (res: felt) {
+    }
 
-    func getDaoTreasuryFee() -> (res : felt):
-    end
+    func getStackingVaultFee() -> (res: felt) {
+    }
 
-    func getStackingVaultFee() -> (res : felt):
-    end
+    func getMaxFundLevel() -> (res: felt) {
+    }
 
-    func getMaxFundLevel() -> (res : felt):
-    end
+    func getStackingDispute() -> (res: felt) {
+    }
 
-    func getStackingDispute() -> (res : felt):
-    end
+    func getGuaranteeRatio() -> (res: felt) {
+    }
 
-    func getGuaranteeRatio() -> (res : felt):
-    end
+    func getExitTimestamp() -> (res: felt) {
+    }
 
-    func getExitTimestamp() -> (res : felt):
-    end
+    func getCloseFundRequest(fund: felt) -> (res: felt) {
+    }
 
-    func getCloseFundRequest(fund: felt) -> (res : felt):
-    end
+    func getManagerGuaranteeRatio(account: felt) -> (res: felt) {
+    }
 
-    func getManagerGuaranteeRatio(account: felt) -> (res : felt):
-    end
-
-    
-
-    ##Business
-
+    // #Business
 
     func initializeFund(
-    fund: felt,
-    fundLevel: felt,
-    fundName:felt,
-    fundSymbol:felt,
-    denominationAsset:felt,
-    amount: Uint256,
-    shareAmount: Uint256,
-    feeConfig_len: felt,
-    feeConfig: felt*,
-    isPublic:felt,
-    ):
-    end
+        fund: felt,
+        fundLevel: felt,
+        fundName: felt,
+        fundSymbol: felt,
+        denominationAsset: felt,
+        amount: Uint256,
+        shareAmount: Uint256,
+        feeConfig_len: felt,
+        feeConfig: felt*,
+        isPublic: felt,
+    ) {
+    }
 
-    func addAllowedDepositors(_fund:felt, _depositors_len:felt, _depositors:felt*):
-    end
+    func addAllowedDepositors(_fund: felt, _depositors_len: felt, _depositors: felt*) {
+    }
 
-    func addGlobalAllowedIntegrations(allowed_integrations_len:felt, allowed_integrations:Integration*):
-    end
+    func addGlobalAllowedIntegrations(
+        allowed_integrations_len: felt, allowed_integrations: Integration*
+    ) {
+    }
 
-    func addGlobalAllowedExternalPositions(externalPositionList_len:felt, externalPositionList:felt*):
-    end
+    func addGlobalAllowedExternalPositions(
+        externalPositionList_len: felt, externalPositionList: felt*
+    ) {
+    }
 
-    func addGlobalAllowedAssets(assetList_len:felt, assetList:felt*):
-    end
+    func addGlobalAllowedAssets(assetList_len: felt, assetList: felt*) {
+    }
 
+    func setFeeManager(fee_manager: felt) {
+    }
 
-    func setFeeManager(fee_manager:felt):
-    end
+    func setPolicyManager(policy_manager: felt) {
+    }
 
-    func setPolicyManager(policy_manager:felt):
-    end
+    func setIntegrationManager(integration_manager: felt) {
+    }
 
-    func setIntegrationManager(integration_manager:felt):
-    end
+    func setValueInterpretor(value_interpretor: felt) {
+    }
 
-    func setValueInterpretor(value_interpretor:felt):
-    end
+    func setOrcale(oracle: felt) {
+    }
 
-    func setOrcale(oracle:felt):
-    end
+    func setPrimitivePriceFeed(primitive_price_feed: felt) {
+    }
 
-    func setPrimitivePriceFeed(primitive_price_feed:felt):
-    end
+    func setApprovePrelogic(approve_prelogic: felt) {
+    }
 
-    func setApprovePrelogic(approve_prelogic:felt):
-    end
+    func setSharePriceFeed(share_price_feed: felt) {
+    }
 
-    func setSharePriceFeed(share_price_feed:felt):
-    end
+    func setStackingVault(stacking_vault: felt) {
+    }
 
-    func setStackingVault(stacking_vault:felt):
-    end
+    func setDaoTreasury(dao_treasury: felt) {
+    }
 
-    func setDaoTreasury(dao_treasury:felt):
-    end
+    func setStackingVaultFee(stacking_vault_fee: felt) {
+    }
 
-    func setStackingVaultFee(stacking_vault_fee:felt):
-    end
+    func setDaoTreasuryFee(dao_treasury_fee: felt) {
+    }
 
-    func setDaoTreasuryFee(dao_treasury_fee:felt):
-    end
+    func setMaxFundLevel(max_fund_level: felt) {
+    }
 
-    func setMaxFundLevel(max_fund_level:felt):
-    end
+    func setStackingDispute(stacking_dispute: felt) {
+    }
 
-    func setStackingDispute(stacking_dispute:felt):
-    end
+    func SetGuaranteeRatio(guarantee_ratio: felt) {
+    }
 
-    func SetGuaranteeRatio(guarantee_ratio:felt):
-    end
-
-    func setExitTimestamp(exit_timestamp:felt):
-    end
-
-end
+    func setExitTimestamp(exit_timestamp: felt) {
+    }
+}

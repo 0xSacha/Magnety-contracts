@@ -9,3 +9,4 @@ namespace IDerivativePriceFeed:
     func calcUnderlyingValues(_derivative: felt, _amount: Uint256) -> ( underlyingsAssets_len:felt, underlyingsAssets:felt*, underlyingsAmount_len:felt, underlyingsAmount:Uint256* ):
     end
 end
+

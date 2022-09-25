@@ -16,98 +16,90 @@ from starkware.starknet.common.syscalls import (
 )
 
 @storage_var
-func IARFSwapControllerContract() -> (res: felt):
-end
-
+func IARFSwapControllerContract() -> (res: felt) {
+}
 
 @storage_var
-func vaultFactory() -> (res: felt):
-end
+func vaultFactory() -> (res: felt) {
+}
 
-
-func onlyOwner{pedersen_ptr : HashBuiltin*, syscall_ptr : felt*, range_check_ptr}():
-    let (vaultFactory_) = vaultFactory.read()
-    let (caller_) = get_caller_address()
-    let (owner_) = IVaultFactory.getOwner(vaultFactory_)
-    with_attr error_message("onlyVaultFactory: only callable by the owner"):
-        assert owner_ = caller_
-    end
-    return ()
-end
-
+func onlyOwner{pedersen_ptr: HashBuiltin*, syscall_ptr: felt*, range_check_ptr}() {
+    let (vaultFactory_) = vaultFactory.read();
+    let (caller_) = get_caller_address();
+    let (owner_) = IVaultFactory.getOwner(vaultFactory_);
+    with_attr error_message("onlyVaultFactory: only callable by the owner") {
+        assert owner_ = caller_;
+    }
+    return ();
+}
 
 @constructor
-func constructor{
-        syscall_ptr : felt*,
-        pedersen_ptr : HashBuiltin*,
-        range_check_ptr
-    }(
-        _vaultFactory: felt,
-    ):
-    vaultFactory.write(_vaultFactory)
-    return ()
-end
+func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+    _vaultFactory: felt
+) {
+    vaultFactory.write(_vaultFactory);
+    return ();
+}
 
-
-
-#
-#Getter
-#
+//
+// Getter
+//
 
 @view
-func calcUnderlyingValues{
-        syscall_ptr: felt*,
-        pedersen_ptr: HashBuiltin*,
-        range_check_ptr
-    }(_derivative: felt, _amount: Uint256) -> ( underlyingsAssets_len:felt, underlyingsAssets:felt*, underlyingsAmount_len:felt, underlyingsAmount:Uint256* ):
-    alloc_locals
-    let(IARFSwapController_:felt) = IARFSwapControllerContract.read()
-    with_attr error_message("calcUnderlyingValues: IARFSwapController address not found"):
-        assert_not_zero(IARFSwapController_)
-    end
-    let(isPoolExist_:felt) = IARFPool.name(_derivative)
-    with_attr error_message("calcUnderlyingValues: can't find pool from LPtoken"):
-        assert_not_zero(isPoolExist_)
-    end
-    let (underlyingsAssets_ : felt*) = alloc()
-    let (underlyingsAmount_ : Uint256*) = alloc()
-    let (totalSupply_:Uint256) = IARFPool.totalSupply(_derivative)
-    let (underlyingsAssets0_:felt) = IARFPool.getToken0(_derivative)
-    assert [underlyingsAssets_] = underlyingsAssets0_
-    let (underlyingsAssets1_:felt) = IARFPool.getToken1(_derivative)
-    assert [underlyingsAssets_ + 1] = underlyingsAssets1_
-    let (reserveToken0_:Uint256, reserveToken1_:Uint256) = IARFPool.getReserves(_derivative)
-    let (amountToken0_:Uint256, amountToken1_:Uint256) = IARFSwapController.removeLiquidityQuote(IARFSwapController_, _amount, reserveToken0_, reserveToken1_, totalSupply_)
-    assert [underlyingsAmount_] = amountToken0_
-    assert [underlyingsAmount_+2] = amountToken1_
-    return (underlyingsAssets_len=2, underlyingsAssets=underlyingsAssets_, underlyingsAmount_len=2, underlyingsAmount=underlyingsAmount_)
-end
-
+func calcUnderlyingValues{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+    _derivative: felt, _amount: Uint256
+) -> (
+    underlyingsAssets_len: felt,
+    underlyingsAssets: felt*,
+    underlyingsAmount_len: felt,
+    underlyingsAmount: Uint256*,
+) {
+    alloc_locals;
+    let (IARFSwapController_: felt) = IARFSwapControllerContract.read();
+    with_attr error_message("calcUnderlyingValues: IARFSwapController address not found") {
+        assert_not_zero(IARFSwapController_);
+    }
+    let (isPoolExist_: felt) = IARFPool.name(_derivative);
+    with_attr error_message("calcUnderlyingValues: can't find pool from LPtoken") {
+        assert_not_zero(isPoolExist_);
+    }
+    let (underlyingsAssets_: felt*) = alloc();
+    let (underlyingsAmount_: Uint256*) = alloc();
+    let (totalSupply_: Uint256) = IARFPool.totalSupply(_derivative);
+    let (underlyingsAssets0_: felt) = IARFPool.getToken0(_derivative);
+    assert [underlyingsAssets_] = underlyingsAssets0_;
+    let (underlyingsAssets1_: felt) = IARFPool.getToken1(_derivative);
+    assert [underlyingsAssets_ + 1] = underlyingsAssets1_;
+    let (reserveToken0_: Uint256, reserveToken1_: Uint256) = IARFPool.getReserves(_derivative);
+    let (amountToken0_: Uint256, amountToken1_: Uint256) = IARFSwapController.removeLiquidityQuote(
+        IARFSwapController_, _amount, reserveToken0_, reserveToken1_, totalSupply_
+    );
+    assert [underlyingsAmount_] = amountToken0_;
+    assert [underlyingsAmount_ + 2] = amountToken1_;
+    return (
+        underlyingsAssets_len=2,
+        underlyingsAssets=underlyingsAssets_,
+        underlyingsAmount_len=2,
+        underlyingsAmount=underlyingsAmount_,
+    );
+}
 
 @view
-func getIARFSwapController{
-        pedersen_ptr: HashBuiltin*, 
-        syscall_ptr: felt*, 
-        range_check_ptr
-    }() -> (res:felt):
-    let(res_:felt) = IARFSwapControllerContract.read()
-    return(res=res_)
-end
+func getIARFSwapController{pedersen_ptr: HashBuiltin*, syscall_ptr: felt*, range_check_ptr}() -> (
+    res: felt
+) {
+    let (res_: felt) = IARFSwapControllerContract.read();
+    return (res=res_);
+}
 
-
-#
-#External
-#
+//
+// External
+//
 @external
-func setIARFSwapController{
-        pedersen_ptr: HashBuiltin*, 
-        syscall_ptr: felt*, 
-        range_check_ptr
-    }(
-        _IARFSwapController: felt,
-    ):
-    onlyOwner()
-    IARFSwapControllerContract.write(_IARFSwapController)
-    return()
-end
- 
+func setIARFSwapController{pedersen_ptr: HashBuiltin*, syscall_ptr: felt*, range_check_ptr}(
+    _IARFSwapController: felt
+) {
+    onlyOwner();
+    IARFSwapControllerContract.write(_IARFSwapController);
+    return ();
+}

@@ -1,65 +1,67 @@
-# Declare this file as a StarkNet contract.
+// Declare this file as a StarkNet contract.
 %lang starknet
 
 from starkware.cairo.common.cairo_builtins import HashBuiltin
 
-struct Integration:
-    member contract : felt
-    member selector : felt
-end
-
-
+struct Integration {
+    contract: felt,
+    selector: felt,
+}
 
 @contract_interface
-namespace IIntegrationManager:
+namespace IIntegrationManager {
+    // Setters
+    func setAvailableAsset(_asset: felt) {
+    }
 
+    func setAvailableExternalPosition(_asset: felt) {
+    }
 
-    #Setters 
-    func setAvailableAsset(_asset: felt):
-    end
+    func setAvailableIntegration(
+        _contract: felt, _selector: felt, _integration: felt, _level: felt
+    ) {
+    }
 
-    func setAvailableExternalPosition(_asset: felt):
-    end
+    // #Getters
 
-    func setAvailableIntegration(_contract: felt, _selector: felt, _integration:felt, _level:felt):
-    end
+    func isIntegratedContract(contract: felt) -> (is_integrated_contract: felt) {
+    }
 
- 
-    ##Getters
+    func isAvailableAsset(asset: felt) -> (res: felt) {
+    }
 
-    func isIntegratedContract(contract: felt) -> (is_integrated_contract: felt):
-    end
+    func isAvailableIntegration(contract: felt, selector: felt) -> (res: felt) {
+    }
 
+    func isAvailableExternalPosition(external_position: felt) -> (
+        is_available_external_position: felt
+    ) {
+    }
 
-    func isAvailableAsset(asset: felt) -> (res: felt):
-    end
+    func isAvailableShare(_share: felt) -> (res: felt) {
+    }
 
-    func isAvailableIntegration(contract: felt, selector:felt) -> (res: felt): 
-    end
+    func prelogicContract(contract: felt, selector: felt) -> (prelogic: felt) {
+    }
 
-    func isAvailableExternalPosition(external_position: felt) -> (is_available_external_position: felt): 
-    end
+    func integrationRequiredFundLevel(contract: felt, selector: felt) -> (
+        integration_required_fund_level: felt
+    ) {
+    }
 
-    func isAvailableShare(_share: felt) -> (res: felt): 
-    end
+    func availableAssets() -> (available_assets_len: felt, available_assets: felt*) {
+    }
 
+    func availableExternalPositions() -> (
+        available_external_positions_len: felt, available_external_positions: felt*
+    ) {
+    }
 
-    func prelogicContract(contract: felt, selector:felt) -> (prelogic: felt): 
-    end
+    func availableShares() -> (share_available_len: felt, share_available: felt*) {
+    }
 
-    func integrationRequiredFundLevel(contract: felt, selector:felt) -> (integration_required_fund_level: felt): 
-    end
-
-
-    func availableAssets() -> (available_assets_len : felt, available_assets :felt*): 
-    end
-
-    func availableExternalPositions() -> (available_external_positions_len : felt, available_external_positions :felt*): 
-    end
-
-    func availableShares() -> (share_available_len: felt, share_available:felt*): 
-    end
-
-    func availableIntegrations() -> (available_integrations_len:felt, available_integrations: Integration*): 
-    end
-end
+    func availableIntegrations() -> (
+        available_integrations_len: felt, available_integrations: Integration*
+    ) {
+    }
+}
